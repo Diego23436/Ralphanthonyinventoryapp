@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "Ralph Anthony",
+    "tagline": "A real-time system to track every material entering and leaving the site — accurate, secure, and always up to date."
+  },
+  "welcome": {
+    "cta": "Get Started"
+  },
+  "auth": {
+    "login": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "loginButton": "Log In",
+    "loggingIn": "Signing in…",
+    "error": "Incorrect email or password."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "materials": "Material Management",
+    "stockIn": "Stock In",
+    "stockOut": "Stock Out",
+    "history": "Transaction History",
+    "analytics": "Analytics",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "materialsTracked": "Materials Tracked",
+    "belowThreshold": "Below Threshold",
+    "stockInToday": "Stock-In Today",
+    "stockOutToday": "Stock-Out Today",
+    "newDelivery": "+ New Delivery",
+    "recordUsage": "+ Record Usage",
+    "usageChart": "Material Usage — Last 7 Days",
+    "recentActivity": "Recent Activity"
+  },
+  "materials": {
+    "title": "Material Management",
+    "registerNew": "+ Register New Material",
+    "name": "Name",
+    "description": "Description",
+    "quantity": "Current Quantity",
+    "threshold": "Threshold",
+    "status": "Status",
+    "search": "Search materials…"
+  },
+  "stockIn": {
+    "title": "Stock In — New Delivery",
+    "material": "Material",
+    "quantity": "Quantity Received",
+    "date": "Delivery Date",
+    "deliveredBy": "Delivered By",
+    "receivedBy": "Received By",
+    "submit": "Log Delivery"
+  },
+  "stockOut": {
+    "title": "Stock Out — Record Usage",
+    "material": "Material",
+    "quantity": "Quantity Used",
+    "damaged": "Damaged?",
+    "location": "Level / Location",
+    "date": "Date",
+    "recordedBy": "Recorded By",
+    "submit": "Log Usage"
+  },
+  "history": {
+    "title": "Transaction History"
+  },
+  "analytics": {
+    "title": "Analytics"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "settings": {
+    "title": "Settings"
+  }
+}

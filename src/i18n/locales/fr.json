@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "Ralph Anthony",
+    "tagline": "Un système en temps réel pour suivre chaque matériau entrant et sortant du chantier — précis, sécurisé et toujours à jour."
+  },
+  "welcome": {
+    "cta": "Commencer"
+  },
+  "auth": {
+    "login": "Connexion",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "forgot": "Mot de passe oublié ?",
+    "loginButton": "Se connecter",
+    "loggingIn": "Connexion en cours…",
+    "error": "E-mail ou mot de passe incorrect."
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "materials": "Gestion des matériaux",
+    "stockIn": "Entrée de stock",
+    "stockOut": "Sortie de stock",
+    "history": "Historique des transactions",
+    "analytics": "Analytique",
+    "notifications": "Notifications",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "materialsTracked": "Matériaux suivis",
+    "belowThreshold": "Sous le seuil",
+    "stockInToday": "Entrées aujourd'hui",
+    "stockOutToday": "Sorties aujourd'hui",
+    "newDelivery": "+ Nouvelle livraison",
+    "recordUsage": "+ Enregistrer une sortie",
+    "usageChart": "Utilisation des matériaux — 7 derniers jours",
+    "recentActivity": "Activité récente"
+  },
+  "materials": {
+    "title": "Gestion des matériaux",
+    "registerNew": "+ Enregistrer un matériau",
+    "name": "Nom",
+    "description": "Description",
+    "quantity": "Quantité actuelle",
+    "threshold": "Seuil",
+    "status": "Statut",
+    "search": "Rechercher des matériaux…"
+  },
+  "stockIn": {
+    "title": "Entrée de stock — Nouvelle livraison",
+    "material": "Matériau",
+    "quantity": "Quantité reçue",
+    "date": "Date de livraison",
+    "deliveredBy": "Livré par",
+    "receivedBy": "Reçu par",
+    "submit": "Enregistrer la livraison"
+  },
+  "stockOut": {
+    "title": "Sortie de stock — Enregistrer l'utilisation",
+    "material": "Matériau",
+    "quantity": "Quantité utilisée",
+    "damaged": "Endommagé ?",
+    "location": "Niveau / Emplacement",
+    "date": "Date",
+    "recordedBy": "Enregistré par",
+    "submit": "Enregistrer la sortie"
+  },
+  "history": {
+    "title": "Historique des transactions"
+  },
+  "analytics": {
+    "title": "Analytique"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "settings": {
+    "title": "Paramètres"
+  }
+}
