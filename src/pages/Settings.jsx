@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
+import { setAppLanguage } from '../i18n'
 
 export default function Settings() {
   const { t, i18n } = useTranslation()
@@ -39,7 +40,7 @@ export default function Settings() {
             {['en', 'fr'].map((lng) => (
               <button
                 key={lng}
-                onClick={() => i18n.changeLanguage(lng)}
+                onClick={() => setAppLanguage(lng)}
                 className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
                   i18n.language === lng ? 'bg-clay-500 text-white' : 'bg-ink-50 text-ink-500 dark:bg-ink-700'
                 }`}

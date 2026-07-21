@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Menu, Sun, Moon, Bell, ChevronDown, LogOut, User } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useAuth } from '../../contexts/AuthContext'
+import { setAppLanguage } from '../../i18n'
 
 export default function TopBar({ onMenuClick, alertCount = 0 }) {
   const { t, i18n } = useTranslation()
@@ -12,14 +13,13 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
 
   function toggleLang() {
     const next = i18n.language === 'en' ? 'fr' : 'en'
-    i18n.changeLanguage(next)
-    localStorage.setItem('ra_lang', next)
+    setAppLanguage(next)
   }
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#eadfce] bg-[rgba(253,248,240,0.88)] px-4 backdrop-blur dark:border-[#4a3020] dark:bg-[rgba(68,44,30,0.92)] md:px-6">
       <div className="flex items-center gap-3">
-        <button className="text-ink-500 md:hidden" onClick={onMenuClick} aria-label="Open menu">
+        <button className="text-ink-500 md:hidden" onClick={onMenuClick} aria-label={t('common.openMenu')}>
           <Menu size={22} />
         </button>
       </div>
@@ -32,7 +32,7 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
         <button
           onClick={toggleTheme}
           className="rounded-full border border-[#e5d4bc] bg-white p-2 text-[#7c6346] shadow-sm hover:bg-[#f6ede2] dark:border-[#6b4630] dark:bg-[#5a3b29] dark:text-[#f8efe3] dark:hover:bg-[#6b4630]"
-          aria-label="Toggle theme"
+          aria-label={t('common.toggleTheme')}
         >
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
         </button>

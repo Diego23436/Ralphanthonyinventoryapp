@@ -6,7 +6,6 @@
 alter table levels enable row level security;
 alter table materials enable row level security;
 alter table users enable row level security;
-alter table admins enable row level security;
 alter table stock_in enable row level security;
 alter table stock_out enable row level security;
 alter table notifications enable row level security;
@@ -50,10 +49,6 @@ create policy "users: admins manage accounts"
 drop policy if exists "users: admins update accounts" on users;
 create policy "users: admins update accounts"
   on users for update using (is_admin());
-
-drop policy if exists "admins: readable by admins" on admins;
-create policy "admins: readable by admins"
-  on admins for select using (is_admin());
 
 drop policy if exists "stock_in: read for authenticated users" on stock_in;
 create policy "stock_in: read for authenticated users"

@@ -32,7 +32,10 @@
     "quantityError": "Quantity must be greater than zero.",
     "savedOffline": "Saved offline. It will sync automatically once the connection returns.",
     "noMaterials": "No materials available",
-    "offlinePending": "{{count}} offline submission(s) pending sync."
+    "offlinePending": "{{count}} offline submission(s) pending sync.",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle theme"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -93,7 +96,9 @@
     "loading": "Loading materials...",
     "archive": "Archive",
     "noMatch": "No materials match \"{{query}}\".",
-    "submitError": "Unable to register material."
+    "submitError": "Unable to register material.",
+    "exampleName": "e.g. Cement 50kg",
+    "exampleDescription": "Optional notes / specification"
   },
   "stockIn": {
     "title": "Stock In — New Delivery",
@@ -178,7 +183,9 @@
     "featureOfflineText": "Queued submissions auto-sync when the network returns.",
     "locked": "Too many failed attempts. Please wait a moment before trying again.",
     "createAccount": "Create a new account",
-    "setupNote": "If Supabase is not configured yet, the app will still render but sign-in will return a setup message."
+    "setupNote": "If Supabase is not configured yet, the app will still render but sign-in will return a setup message.",
+    "emailPlaceholder": "you@company.com",
+    "passwordPlaceholder": "********"
   },
   "signup": {
     "banner": "Create account",

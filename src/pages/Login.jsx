@@ -76,7 +76,7 @@ export default function Login() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               className="field-input"
-              placeholder="you@company.com"
+              placeholder={t('login.emailPlaceholder')}
             />
           </div>
           <div>
@@ -91,7 +91,7 @@ export default function Login() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="field-input"
-              placeholder="********"
+              placeholder={t('login.passwordPlaceholder')}
             />
           </div>
 

@@ -40,11 +40,6 @@ create table if not exists users (
   created_at timestamptz not null default now()
 );
 
-create table if not exists admins (
-  id           uuid primary key references users (id) on delete cascade,
-  access_level  text not null default 'standard' check (access_level in ('standard', 'super_admin'))
-);
-
 -- -------------------------------------------------------------------------
 -- STOCK IN
 -- -------------------------------------------------------------------------

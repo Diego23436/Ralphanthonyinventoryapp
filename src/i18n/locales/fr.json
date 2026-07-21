@@ -32,7 +32,10 @@
     "quantityError": "La quantité doit être supérieure à zéro.",
     "savedOffline": "Enregistré hors ligne. La synchronisation se fera automatiquement lorsque la connexion reviendra.",
     "noMaterials": "Aucun matériau disponible",
-    "offlinePending": "{{count}} soumission(s) hors ligne en attente de synchronisation."
+    "offlinePending": "{{count}} soumission(s) hors ligne en attente de synchronisation.",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "toggleTheme": "Basculer le thème"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -93,7 +96,9 @@
     "loading": "Chargement des matériaux...",
     "archive": "Archiver",
     "noMatch": "Aucun matériau ne correspond à « {{query}} ».",
-    "submitError": "Impossible d’enregistrer le matériau."
+    "submitError": "Impossible d’enregistrer le matériau.",
+    "exampleName": "ex. Ciment 50kg",
+    "exampleDescription": "Notes optionnelles / spécification"
   },
   "stockIn": {
     "title": "Entrée de stock — Nouvelle livraison",
@@ -178,7 +183,9 @@
     "featureOfflineText": "Les soumissions en attente se synchronisent automatiquement au retour du réseau.",
     "locked": "Trop de tentatives échouées. Veuillez patienter un instant avant de réessayer.",
     "createAccount": "Créer un nouveau compte",
-    "setupNote": "Si Supabase n’est pas encore configuré, l’application s’affichera tout de même mais la connexion renverra un message d’installation."
+    "setupNote": "Si Supabase n’est pas encore configuré, l’application s’affichera tout de même mais la connexion renverra un message d’installation.",
+    "emailPlaceholder": "vous@entreprise.com",
+    "passwordPlaceholder": "********"
   },
   "signup": {
     "banner": "Créer un compte",

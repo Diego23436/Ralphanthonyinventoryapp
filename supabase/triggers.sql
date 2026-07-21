@@ -116,19 +116,6 @@ create trigger trg_block_stock_out_mutation
   before update or delete on stock_out
   for each row execute function block_ledger_mutation();
 
-create or replace function enforce_user_subtype()
-returns trigger as $$
-begin
-  insert into admins (id) values (new.id) on conflict (id) do nothing;
-  return new;
-end;
-$$ language plpgsql;
-
-drop trigger if exists trg_enforce_user_subtype on users;
-create trigger trg_enforce_user_subtype
-  after insert on users
-  for each row execute function enforce_user_subtype();
-
 create or replace function handle_new_auth_user()
 returns trigger
 language plpgsql
@@ -144,7 +131,7 @@ begin
   )
   on conflict (id) do update
     set name = excluded.name,
-        role = excluded.role;
+        role = 'admin';
   return new;
 end;
 $$;

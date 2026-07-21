@@ -38,7 +38,7 @@ export default function Sidebar({ open, onClose }) {
       >
         <div className="mb-6 flex items-center justify-between gap-3 rounded-[1.4rem] bg-white/70 px-3 py-3 shadow-sm dark:bg-white/10">
           <BrandMark size={62} className="w-full justify-start" />
-          <button className="text-[#8b6a48] md:hidden dark:text-[#f5e9db]" onClick={onClose} aria-label="Close menu">
+          <button className="text-[#8b6a48] md:hidden dark:text-[#f5e9db]" onClick={onClose} aria-label={t('common.closeMenu')}>
             <X size={20} />
           </button>
         </div>

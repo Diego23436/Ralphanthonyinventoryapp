@@ -22,7 +22,7 @@ function readStoredUser() {
 async function loadProfile(userId) {
   const { data, error } = await supabase.from('users').select('id, name, role').eq('id', userId).maybeSingle()
   if (error) throw error
-  return data
+  return data ? { ...data, role: 'admin' } : null
 }
 
 function buildProfileFromAuth(authUser) {
@@ -155,7 +155,7 @@ export function AuthProvider({ children }) {
         email,
         password,
         options: {
-          data: { name, role: 'admin' },
+          data: { name },
         },
       })
       if (error) return { error: normalizeAuthError(error) }
@@ -173,7 +173,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, isAdmin: true }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, isAdmin: user?.role === 'admin' }}>
       {children}
     </AuthContext.Provider>
   )

@@ -101,11 +101,11 @@ export default function MaterialManagement() {
                 <p className="mt-3 text-sm text-ink-500 dark:text-ink-300">{material.description}</p>
                 <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                   <div className="rounded-2xl bg-ink-50 p-3 dark:bg-ink-800/60">
-                    <p className="text-[11px] uppercase tracking-wide text-ink-400">Quantity</p>
+                    <p className="text-[11px] uppercase tracking-wide text-ink-400">{t('materials.quantity')}</p>
                     <p className="mt-1 font-semibold">{material.current_quantity}</p>
                   </div>
                   <div className="rounded-2xl bg-ink-50 p-3 dark:bg-ink-800/60">
-                    <p className="text-[11px] uppercase tracking-wide text-ink-400">Threshold</p>
+                    <p className="text-[11px] uppercase tracking-wide text-ink-400">{t('materials.threshold')}</p>
                     <p className="mt-1 font-semibold">{material.minimum_threshold}</p>
                   </div>
                 </div>
@@ -182,11 +182,11 @@ export default function MaterialManagement() {
         <form className="space-y-4" onSubmit={handleRegister}>
           <div>
             <label className="field-label">{t('materials.name')}</label>
-            <input name="name" required className="field-input" placeholder="e.g. Cement 50kg" />
+            <input name="name" required className="field-input" placeholder={t('materials.exampleName')} />
           </div>
           <div>
             <label className="field-label">{t('materials.description')}</label>
-            <input name="description" className="field-input" placeholder="Optional notes / specification" />
+            <input name="description" className="field-input" placeholder={t('materials.exampleDescription')} />
           </div>
           <div>
             <label className="field-label">{t('materials.threshold')}</label>
