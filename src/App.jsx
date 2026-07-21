@@ -4,7 +4,6 @@ import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import ProtectedRoute from './routes/ProtectedRoute'
-import AdminRoute from './routes/AdminRoute'
 import AppShell from './components/layout/AppShell'
 
 import Welcome from './pages/Welcome'
@@ -38,11 +37,8 @@ export default function App() {
                 <Route path="/stock-out" element={<StockOut />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/settings" element={<Settings />} />
-
-                <Route element={<AdminRoute />}>
-                  <Route path="/history" element={<TransactionHistory />} />
-                  <Route path="/notifications" element={<Notifications />} />
-                </Route>
+                <Route path="/history" element={<TransactionHistory />} />
+                <Route path="/notifications" element={<Notifications />} />
               </Route>
             </Route>
 

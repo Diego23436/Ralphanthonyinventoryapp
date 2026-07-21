@@ -4,7 +4,12 @@
     "tagline": "A real-time system to track every material entering and leaving the site — accurate, secure, and always up to date."
   },
   "welcome": {
-    "cta": "Get Started"
+    "cta": "Get Started",
+    "realtime": "Realtime inventory",
+    "history": "Stock movement history",
+    "alerts": "Threshold alerts",
+    "goToLogin": "Go to login",
+    "createAccount": "Create account"
   },
   "auth": {
     "login": "Log in",
@@ -14,6 +19,20 @@
     "loginButton": "Log In",
     "loggingIn": "Signing in…",
     "error": "Incorrect email or password."
+  },
+  "common": {
+    "refresh": "Refresh",
+    "pdf": "PDF",
+    "excel": "Excel",
+    "all": "All",
+    "actions": "Actions",
+    "saving": "Saving...",
+    "loading": "Loading...",
+    "submitError": "Unable to complete this action.",
+    "quantityError": "Quantity must be greater than zero.",
+    "savedOffline": "Saved offline. It will sync automatically once the connection returns.",
+    "noMaterials": "No materials available",
+    "offlinePending": "{{count}} offline submission(s) pending sync."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -28,6 +47,8 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "overview": "Operations overview",
+    "subtitle": "Live inventory, low-stock signals, and recent activity update across connected devices in real time.",
     "materialsTracked": "Materials Tracked",
     "belowThreshold": "Below Threshold",
     "stockInToday": "Stock-In Today",
@@ -35,17 +56,44 @@
     "newDelivery": "+ New Delivery",
     "recordUsage": "+ Record Usage",
     "usageChart": "Material Usage — Last 7 Days",
-    "recentActivity": "Recent Activity"
+    "usageSubtitle": "Seven-day stock-out volume",
+    "watching": "{{count}} watching",
+    "recentActivity": "Recent Activity",
+    "noActivity": "Activity will appear here once stock moves are recorded.",
+    "initializeMaterials": "Initialize materials",
+    "materialNamePlaceholder": "e.g. Cement 50kg",
+    "optionalNotes": "Optional notes",
+    "createMaterial": "Create material",
+    "initializeLevels": "Initialize work levels",
+    "levelName": "Level name",
+    "levelNamePlaceholder": "e.g. Level 1 - Slab",
+    "optionalZone": "Optional zone or work package",
+    "startDate": "Start date",
+    "finishDate": "Finish date",
+    "createLevel": "Create work level",
+    "loading": "Loading live inventory snapshot...",
+    "exports": "Ledger exports",
+    "exportsSubtitle": "Export the full transaction ledger directly from the dashboard.",
+    "transactions": "{{count}} transaction(s)",
+    "belowThresholdCount": "{{count}} material(s)",
+    "belowThresholdText": "are at or below their configured threshold.",
+    "reviewNow": "Review now"
   },
   "materials": {
     "title": "Material Management",
+    "catalog": "Inventory catalog",
+    "subtitle": "Clean, searchable stock records with thresholds, current balance, and status colors that stay in sync.",
     "registerNew": "+ Register New Material",
     "name": "Name",
     "description": "Description",
     "quantity": "Current Quantity",
     "threshold": "Threshold",
     "status": "Status",
-    "search": "Search materials…"
+    "search": "Search materials…",
+    "loading": "Loading materials...",
+    "archive": "Archive",
+    "noMatch": "No materials match \"{{query}}\".",
+    "submitError": "Unable to register material."
   },
   "stockIn": {
     "title": "Stock In — New Delivery",
@@ -53,29 +101,94 @@
     "quantity": "Quantity Received",
     "date": "Delivery Date",
     "deliveredBy": "Delivered By",
+    "deliveredByPlaceholder": "Supplier or courier name",
     "receivedBy": "Received By",
-    "submit": "Log Delivery"
+    "submit": "Log Delivery",
+    "noMaterials": "Create at least one material before recording stock in.",
+    "createMaterialFirst": "Create at least one material first so stock can be recorded.",
+    "success": "Stock in recorded successfully."
   },
   "stockOut": {
     "title": "Stock Out — Record Usage",
     "material": "Material",
     "quantity": "Quantity Used",
     "damaged": "Damaged?",
+    "projectLevel": "Project level",
     "location": "Level / Location",
+    "locationPlaceholder": "e.g. Level 4, apartment living room",
     "date": "Date",
     "recordedBy": "Recorded By",
-    "submit": "Log Usage"
+    "submit": "Log Usage",
+    "noMaterials": "Create at least one material before recording stock out.",
+    "noLevels": "Create work levels first to enable stock out.",
+    "createMaterialFirst": "Create at least one material first so stock can be consumed.",
+    "createLevelFirst": "Create at least one work level before recording usage.",
+    "available": "Only {{availableQuantity}} currently available.",
+    "insufficient": "Only {{availableQuantity}} currently available for this material.",
+    "success": "Stock out recorded successfully."
   },
   "history": {
-    "title": "Transaction History"
+    "title": "Transaction History",
+    "auditTrail": "Audit trail",
+    "subtitle": "Every stock move is appended, never edited. Export the filtered view for reports or archiving.",
+    "loading": "Loading transaction history...",
+    "date": "Date",
+    "operation": "Operation",
+    "material": "Material",
+    "quantity": "Quantity",
+    "performedBy": "Performed by",
+    "location": "Location",
+    "by": "By",
+    "noMatch": "No transactions match the current filter.",
+    "appendOnly": "This ledger is append-only. Corrections happen via new compensating entries, never edits or deletes."
   },
   "analytics": {
-    "title": "Analytics"
+    "title": "Analytics",
+    "subtitle": "A sharper view of site demand, current stock depth, and how inventory is moving over time.",
+    "usageOverTime": "Usage over time",
+    "topMaterials": "Top 5 materials by current stock"
   },
   "notifications": {
-    "title": "Notifications"
+    "title": "Notifications",
+    "signals": "Signals",
+    "subtitle": "Threshold alerts are reflected here immediately when realtime updates arrive from Supabase.",
+    "loading": "Loading alerts...",
+    "empty": "All materials are currently healthy.",
+    "markRead": "Mark read"
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "profileAccess": "Profile and access",
+    "subtitle": "Personal preferences stay simple, and the whole app stays on one admin workflow.",
+    "profile": "Profile",
+    "phone": "Phone",
+    "phonePlaceholder": "+237 6XX XXX XXX",
+    "changePassword": "Change password",
+    "preferences": "Preferences",
+    "language": "Language",
+    "theme": "Theme",
+    "switchToDark": "Switch to dark",
+    "switchToLight": "Switch to light"
+  },
+  "login": {
+    "subtitle": "Sign in to track materials, sync activity in realtime, and keep the site moving even when connectivity is patchy.",
+    "featureAccessTitle": "Single-admin control",
+    "featureAccessText": "One account type handles materials, usage, history, and notifications.",
+    "featureOfflineTitle": "Offline resilient",
+    "featureOfflineText": "Queued submissions auto-sync when the network returns.",
+    "locked": "Too many failed attempts. Please wait a moment before trying again.",
+    "createAccount": "Create a new account",
+    "setupNote": "If Supabase is not configured yet, the app will still render but sign-in will return a setup message."
+  },
+  "signup": {
+    "banner": "Create account",
+    "title": "Sign up",
+    "subtitle": "Create the admin account for the platform.",
+    "fullName": "Full name",
+    "creating": "Creating account...",
+    "create": "Create account",
+    "created": "Account created. You can now sign in.",
+    "haveAccount": "Already have an account?",
+    "backToLogin": "Back to login"
   }
 }

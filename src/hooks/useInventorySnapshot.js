@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { fetchInventorySnapshot, subscribeToInventory } from '../lib/inventoryApi'
+import { supabase } from '../lib/supabaseClient'
 
 export default function useInventorySnapshot() {
   const [snapshot, setSnapshot] = useState(null)
@@ -39,10 +40,14 @@ export default function useInventorySnapshot() {
     const unsubscribe = subscribeToInventory(() => {
       load()
     }, channelName)
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(() => {
+      if (active) load()
+    })
 
     return () => {
       active = false
       unsubscribe()
+      authSubscription.subscription.unsubscribe()
     }
   }, [])
 

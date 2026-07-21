@@ -17,7 +17,7 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-ink-100 bg-surface-card/90 px-4 backdrop-blur dark:border-ink-700 dark:bg-surface-darkcard/90 md:px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#eadfce] bg-[rgba(253,248,240,0.88)] px-4 backdrop-blur dark:border-[#4a3020] dark:bg-[rgba(68,44,30,0.92)] md:px-6">
       <div className="flex items-center gap-3">
         <button className="text-ink-500 md:hidden" onClick={onMenuClick} aria-label="Open menu">
           <Menu size={22} />
@@ -25,20 +25,20 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
       </div>
 
       <div className="flex items-center gap-2 md:gap-3">
-        <button onClick={toggleLang} className="btn-secondary !px-3 !py-1.5 text-xs">
+        <button onClick={toggleLang} className="rounded-full border border-[#e5d4bc] bg-white px-3 py-1.5 text-xs font-semibold text-[#7c6346] shadow-sm dark:border-[#6b4630] dark:bg-[#5a3b29] dark:text-[#f8efe3]">
           {i18n.language === 'en' ? 'FR' : 'EN'}
         </button>
 
         <button
           onClick={toggleTheme}
-          className="rounded-xl border border-ink-200 p-2 text-ink-500 hover:bg-ink-50 dark:border-ink-600 dark:text-ink-200 dark:hover:bg-ink-700"
+          className="rounded-full border border-[#e5d4bc] bg-white p-2 text-[#7c6346] shadow-sm hover:bg-[#f6ede2] dark:border-[#6b4630] dark:bg-[#5a3b29] dark:text-[#f8efe3] dark:hover:bg-[#6b4630]"
           aria-label="Toggle theme"
         >
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
         <button
-          className="relative rounded-xl border border-ink-200 p-2 text-ink-500 hover:bg-ink-50 dark:border-ink-600 dark:text-ink-200 dark:hover:bg-ink-700"
+          className="relative rounded-full border border-[#e5d4bc] bg-white p-2 text-[#7c6346] shadow-sm hover:bg-[#f6ede2] dark:border-[#6b4630] dark:bg-[#5a3b29] dark:text-[#f8efe3] dark:hover:bg-[#6b4630]"
           aria-label={t('nav.notifications')}
         >
           <Bell size={18} />
@@ -52,7 +52,7 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
         <div className="relative">
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="flex items-center gap-2 rounded-xl border border-ink-200 py-1.5 pl-2 pr-2.5 hover:bg-ink-50 dark:border-ink-600 dark:hover:bg-ink-700"
+            className="flex items-center gap-2 rounded-full border border-[#e5d4bc] bg-white py-1.5 pl-2 pr-2.5 shadow-sm hover:bg-[#f6ede2] dark:border-[#6b4630] dark:bg-[#5a3b29] dark:hover:bg-[#6b4630]"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-clay-500 text-xs font-bold text-white">
               {user?.name?.[0] ?? <User size={14} />}
@@ -61,10 +61,10 @@ export default function TopBar({ onMenuClick, alertCount = 0 }) {
             <ChevronDown size={14} className="text-ink-400" />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-44 rounded-xl border border-ink-100 bg-white py-1 shadow-lg dark:border-ink-700 dark:bg-surface-darkcard">
+            <div className="absolute right-0 mt-2 w-44 rounded-2xl border border-[#eadfce] bg-white py-1 shadow-lg dark:border-[#6b4630] dark:bg-[#513525]">
               <button
                 onClick={signOut}
-                className="flex w-full items-center gap-2 px-3.5 py-2 text-sm text-ink-600 hover:bg-ink-50 dark:text-ink-100 dark:hover:bg-ink-700"
+                className="flex w-full items-center gap-2 px-3.5 py-2 text-sm text-[#6d5438] hover:bg-[#f5eadc] dark:text-[#f8efe3] dark:hover:bg-[#6b4630]"
               >
                 <LogOut size={15} /> {t('nav.logout')}
               </button>

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Search, Plus, Archive, RefreshCw } from 'lucide-react'
-import { useAuth } from '../contexts/AuthContext'
 import useInventorySnapshot from '../hooks/useInventorySnapshot'
 import { createMaterial, materialDisplayCode, materialStatus } from '../lib/inventoryApi'
 import StatusBadge from '../components/ui/StatusBadge'
@@ -9,7 +8,6 @@ import Modal from '../components/ui/Modal'
 
 export default function MaterialManagement() {
   const { t } = useTranslation()
-  const { isAdmin } = useAuth()
   const { snapshot, loading, error, refresh } = useInventorySnapshot()
   const [query, setQuery] = useState('')
   const [registerOpen, setRegisterOpen] = useState(false)
@@ -40,7 +38,7 @@ export default function MaterialManagement() {
       setRegisterOpen(false)
       event.currentTarget.reset()
     } catch (submitError) {
-      setFormError(submitError?.message || 'Unable to register material.')
+      setFormError(submitError?.message || t('materials.submitError'))
     } finally {
       setSubmitting(false)
     }
@@ -50,15 +48,15 @@ export default function MaterialManagement() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-3xl border border-white/50 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-ink-700 dark:bg-ink-900/60">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">Inventory catalog</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">{t('materials.catalog')}</p>
           <h1 className="mt-2 text-2xl font-bold">{t('materials.title')}</h1>
           <p className="mt-2 max-w-2xl text-sm text-ink-500 dark:text-ink-300">
-            Clean, searchable stock records with thresholds, current balance, and status colors that stay in sync.
+            {t('materials.subtitle')}
           </p>
         </div>
         <div className="flex gap-2">
           <button onClick={refresh} className="btn-secondary">
-            <RefreshCw size={16} /> Refresh
+            <RefreshCw size={16} /> {t('common.refresh')}
           </button>
           <button onClick={() => setRegisterOpen(true)} className="btn-primary">
             <Plus size={16} /> {t('materials.registerNew')}
@@ -78,7 +76,7 @@ export default function MaterialManagement() {
 
       {loading && (
         <div className="rounded-2xl border border-ink-100 bg-white/80 p-5 text-sm text-ink-500 shadow-sm dark:border-ink-700 dark:bg-ink-900/60">
-          Loading materials...
+          {t('materials.loading')}
         </div>
       )}
       {error && (
@@ -111,18 +109,16 @@ export default function MaterialManagement() {
                     <p className="mt-1 font-semibold">{material.minimum_threshold}</p>
                   </div>
                 </div>
-                {isAdmin && (
-                  <button className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-ink-400 hover:text-status-low">
-                    <Archive size={13} /> Archive
-                  </button>
-                )}
+                <button className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-ink-400 hover:text-status-low">
+                  <Archive size={13} /> {t('materials.archive')}
+                </button>
               </div>
             )
           })}
           {filtered.length === 0 && (
             <div className="px-4 py-12 text-center">
               <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-ink-200 p-6 text-sm text-ink-400 dark:border-ink-700">
-                No materials match "{query}".
+                {t('materials.noMatch', { query })}
               </div>
             </div>
           )}
@@ -138,7 +134,7 @@ export default function MaterialManagement() {
               <th className="px-4 py-3 font-semibold">{t('materials.quantity')}</th>
               <th className="px-4 py-3 font-semibold">{t('materials.threshold')}</th>
               <th className="px-4 py-3 font-semibold">{t('materials.status')}</th>
-              {isAdmin && <th className="px-4 py-3 font-semibold text-right">Actions</th>}
+              <th className="px-4 py-3 font-semibold text-right">{t('common.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -161,21 +157,19 @@ export default function MaterialManagement() {
                   <td className="px-4 py-4">
                     <StatusBadge status={status} />
                   </td>
-                  {isAdmin && (
-                    <td className="px-4 py-4 text-right">
-                      <button className="inline-flex items-center gap-1 text-xs font-medium text-ink-400 hover:text-status-low">
-                        <Archive size={13} /> Archive
-                      </button>
-                    </td>
-                  )}
+                  <td className="px-4 py-4 text-right">
+                    <button className="inline-flex items-center gap-1 text-xs font-medium text-ink-400 hover:text-status-low">
+                      <Archive size={13} /> {t('materials.archive')}
+                    </button>
+                  </td>
                 </tr>
               )
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={isAdmin ? 6 : 5} className="px-4 py-12 text-center">
+                <td colSpan={6} className="px-4 py-12 text-center">
                   <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-ink-200 p-6 text-sm text-ink-400 dark:border-ink-700">
-                    No materials match "{query}".
+                    {t('materials.noMatch', { query })}
                   </div>
                 </td>
               </tr>
@@ -206,7 +200,7 @@ export default function MaterialManagement() {
           )}
 
           <button type="submit" disabled={submitting} className="btn-primary w-full">
-            {submitting ? 'Saving...' : t('materials.registerNew')}
+            {submitting ? t('common.saving') : t('materials.registerNew')}
           </button>
         </form>
       </Modal>

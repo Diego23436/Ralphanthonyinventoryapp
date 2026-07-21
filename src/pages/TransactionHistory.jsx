@@ -19,10 +19,10 @@ export default function TransactionHistory() {
   function exportPdf() {
     const doc = new jsPDF()
     doc.setFontSize(16)
-    doc.text('Transaction History', 14, 16)
+    doc.text(t('history.title'), 14, 16)
     autoTable(doc, {
       startY: 22,
-      head: [['Date', 'Operation', 'Material', 'Quantity', 'Performed by', 'Location']],
+      head: [[t('history.date'), t('history.operation'), t('history.material'), t('history.quantity'), t('history.performedBy'), t('history.location')]],
       body: rows.map((row) => [
         row.date_label ?? row.date,
         row.type,
@@ -40,12 +40,12 @@ export default function TransactionHistory() {
   function exportExcel() {
     const sheet = XLSX.utils.json_to_sheet(
       rows.map((row) => ({
-        Date: row.date_label ?? row.date,
-        Operation: row.type,
-        Material: row.material,
-        Quantity: row.quantity,
-        'Performed by': row.by,
-        Location: row.location,
+        [t('history.date')]: row.date_label ?? row.date,
+        [t('history.operation')]: row.type,
+        [t('history.material')]: row.material,
+        [t('history.quantity')]: row.quantity,
+        [t('history.performedBy')]: row.by,
+        [t('history.location')]: row.location,
       }))
     )
     const workbook = XLSX.utils.book_new()
@@ -57,44 +57,48 @@ export default function TransactionHistory() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-3xl border border-white/50 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-ink-700 dark:bg-ink-900/60">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">Audit trail</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">{t('history.auditTrail')}</p>
           <h1 className="mt-2 text-2xl font-bold">{t('history.title')}</h1>
           <p className="mt-2 max-w-2xl text-sm text-ink-500 dark:text-ink-300">
-            Every stock move is appended, never edited. Export the filtered view for reports or archiving.
+            {t('history.subtitle')}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button onClick={refresh} className="btn-secondary !px-3 !py-2 text-xs">
-            <RefreshCw size={14} /> Refresh
+            <RefreshCw size={14} /> {t('common.refresh')}
           </button>
           <button onClick={exportPdf} className="btn-secondary !px-3 !py-2 text-xs">
-            <Download size={14} /> PDF
+            <Download size={14} /> {t('common.pdf')}
           </button>
           <button onClick={exportExcel} className="btn-secondary !px-3 !py-2 text-xs">
-            <FileSpreadsheet size={14} /> Excel
+            <FileSpreadsheet size={14} /> {t('common.excel')}
           </button>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {['all', 'Stock In', 'Stock Out'].map((option) => (
+        {[
+          { value: 'all', label: t('common.all') },
+          { value: 'Stock In', label: t('nav.stockIn') },
+          { value: 'Stock Out', label: t('nav.stockOut') },
+        ].map((option) => (
           <button
-            key={option}
-            onClick={() => setTypeFilter(option)}
+            key={option.value}
+            onClick={() => setTypeFilter(option.value)}
             className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors ${
-              typeFilter === option
+              typeFilter === option.value
                 ? 'border-clay-500 bg-clay-500 text-white'
                 : 'border-ink-200 text-ink-500 hover:bg-ink-50 dark:border-ink-600 dark:hover:bg-ink-700'
             }`}
           >
-            {option === 'all' ? 'All' : option}
+            {option.label}
           </button>
         ))}
       </div>
 
       {loading && (
         <div className="rounded-2xl border border-ink-100 bg-white/80 p-5 text-sm text-ink-500 shadow-sm dark:border-ink-700 dark:bg-ink-900/60">
-          Loading transaction history...
+          {t('history.loading')}
         </div>
       )}
       {error && (
@@ -108,10 +112,10 @@ export default function TransactionHistory() {
           {rows.map((row) => (
             <div key={row.id} className="p-4">
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-ink-900 dark:text-white">{row.material}</p>
-                  <p className="mt-1 text-xs text-ink-400">{row.date_label ?? row.date}</p>
-                </div>
+              <div>
+                <p className="text-sm font-semibold text-ink-900 dark:text-white">{row.material}</p>
+                <p className="mt-1 text-xs text-ink-400">{row.date_label ?? row.date}</p>
+              </div>
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                     row.type === 'Stock In'
@@ -124,23 +128,23 @@ export default function TransactionHistory() {
               </div>
               <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                 <div className="rounded-2xl bg-ink-50 p-3 dark:bg-ink-800/60">
-                  <p className="text-[11px] uppercase tracking-wide text-ink-400">Quantity</p>
+                  <p className="text-[11px] uppercase tracking-wide text-ink-400">{t('history.quantity')}</p>
                   <p className="mt-1 font-semibold">{row.quantity}</p>
                 </div>
                 <div className="rounded-2xl bg-ink-50 p-3 dark:bg-ink-800/60">
-                  <p className="text-[11px] uppercase tracking-wide text-ink-400">Location</p>
+                  <p className="text-[11px] uppercase tracking-wide text-ink-400">{t('history.location')}</p>
                   <p className="mt-1 font-semibold">{row.location}</p>
                 </div>
               </div>
               <p className="mt-3 text-sm text-ink-500">
-                <span className="font-medium text-ink-700 dark:text-ink-200">By:</span> {row.by}
+                <span className="font-medium text-ink-700 dark:text-ink-200">{t('history.by')}:</span> {row.by}
               </p>
             </div>
           ))}
           {rows.length === 0 && (
             <div className="px-4 py-12 text-center">
               <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-ink-200 p-6 text-sm text-ink-400 dark:border-ink-700">
-                No transactions match the current filter.
+                {t('history.noMatch')}
               </div>
             </div>
           )}
@@ -151,12 +155,12 @@ export default function TransactionHistory() {
         <table className="w-full text-left text-sm">
           <thead className="bg-ink-50/80 text-xs uppercase tracking-wide text-ink-400 dark:bg-ink-800/60">
             <tr>
-              <th className="px-4 py-3 font-semibold">Date</th>
-              <th className="px-4 py-3 font-semibold">Operation</th>
-              <th className="px-4 py-3 font-semibold">Material</th>
-              <th className="px-4 py-3 font-semibold">Quantity</th>
-              <th className="px-4 py-3 font-semibold">Performed by</th>
-              <th className="px-4 py-3 font-semibold">Location</th>
+              <th className="px-4 py-3 font-semibold">{t('history.date')}</th>
+              <th className="px-4 py-3 font-semibold">{t('history.operation')}</th>
+              <th className="px-4 py-3 font-semibold">{t('history.material')}</th>
+              <th className="px-4 py-3 font-semibold">{t('history.quantity')}</th>
+              <th className="px-4 py-3 font-semibold">{t('history.performedBy')}</th>
+              <th className="px-4 py-3 font-semibold">{t('history.location')}</th>
             </tr>
           </thead>
           <tbody>
@@ -184,7 +188,7 @@ export default function TransactionHistory() {
               <tr>
                 <td colSpan={6} className="px-4 py-12 text-center">
                   <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-ink-200 p-6 text-sm text-ink-400 dark:border-ink-700">
-                    No transactions match the current filter.
+                    {t('history.noMatch')}
                   </div>
                 </td>
               </tr>
@@ -194,7 +198,7 @@ export default function TransactionHistory() {
       </div>
 
       <p className="text-xs text-ink-400">
-        This ledger is append-only. Corrections happen via new compensating entries, never edits or deletes.
+        {t('history.appendOnly')}
       </p>
     </div>
   )

@@ -42,14 +42,13 @@ export default function Login() {
           <BrandMark size={72} className="mb-6 w-full justify-start sm:w-auto" />
           <h1 className="text-3xl font-bold">{t('auth.login')}</h1>
           <p className="mt-3 text-sm leading-6 text-ink-500 dark:text-ink-300">
-            Sign in to track materials, sync activity in realtime, and keep the site moving even when connectivity is
-            patchy.
+            {t('login.subtitle')}
           </p>
 
           <div className="mt-7 space-y-3">
             {[
-              { icon: ShieldCheck, title: 'Secure role access', text: 'Admin and storekeeper views stay separated.' },
-              { icon: WifiOff, title: 'Offline resilient', text: 'Queued submissions auto-sync when the network returns.' },
+              { icon: ShieldCheck, title: t('login.featureAccessTitle'), text: t('login.featureAccessText') },
+              { icon: WifiOff, title: t('login.featureOfflineTitle'), text: t('login.featureOfflineText') },
             ].map((item) => (
               <div key={item.title} className="flex gap-3 rounded-2xl bg-ink-50/80 p-4 dark:bg-ink-800/60">
                 <div className="mt-0.5 rounded-xl bg-clay-500/10 p-2 text-clay-600 dark:text-clay-300">
@@ -103,7 +102,7 @@ export default function Login() {
           )}
           {locked && (
             <p role="alert" className="rounded-xl border border-status-low/20 bg-status-low/5 px-3 py-2 text-sm font-medium text-status-low">
-              Too many failed attempts. Please wait a moment before trying again.
+              {t('login.locked')}
             </p>
           )}
 
@@ -118,10 +117,10 @@ export default function Login() {
               className="inline-flex items-center justify-center gap-2 rounded-full border border-clay-500/20 bg-clay-500/5 px-4 py-2 font-semibold text-clay-500 transition-colors hover:bg-clay-500/10"
             >
               <UserPlus size={14} />
-              Create a new account
+              {t('login.createAccount')}
             </Link>
             <p>
-              If Supabase is not configured yet, the app will still render but sign-in will return a setup message.
+              {t('login.setupNote')}
             </p>
           </div>
         </form>

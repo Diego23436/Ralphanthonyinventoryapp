@@ -25,15 +25,15 @@ export default function Welcome() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-ink-600 dark:text-ink-300">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 shadow-sm dark:bg-white/5">
             <CheckCircle2 size={16} className="text-status-healthy" />
-            Realtime inventory
+            {t('welcome.realtime')}
           </span>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 shadow-sm dark:bg-white/5">
             <ClipboardList size={16} className="text-clay-500" />
-            Stock movement history
+            {t('welcome.history')}
           </span>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 shadow-sm dark:bg-white/5">
             <BellRing size={16} className="text-status-watch" />
-            Threshold alerts
+            {t('welcome.alerts')}
           </span>
         </div>
 
@@ -42,14 +42,14 @@ export default function Welcome() {
             onClick={() => navigate('/login')}
             className="btn-primary px-8 py-3 text-base shadow-[0_18px_45px_rgba(160,114,58,0.22)]"
           >
-            Go to login
+            {t('welcome.goToLogin')}
             <ArrowRight size={18} />
           </button>
           <button
             onClick={() => navigate('/signup')}
             className="rounded-full border border-clay-500/20 bg-white/80 px-8 py-3 text-base font-semibold text-clay-600 shadow-sm transition-colors hover:bg-clay-500/5 dark:bg-white/5 dark:text-ink-100"
           >
-            Create account
+            {t('welcome.createAccount')}
           </button>
         </div>
       </div>

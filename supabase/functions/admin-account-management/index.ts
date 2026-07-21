@@ -6,7 +6,7 @@ const supabase = createClient(supabaseUrl, serviceRoleKey)
 
 Deno.serve(async (request) => {
   try {
-    const { action, email, name, assigned_area, user_id } = await request.json()
+    const { action, email, name, user_id } = await request.json()
 
     if (action === 'invite') {
       if (!email || !name) {
@@ -14,7 +14,7 @@ Deno.serve(async (request) => {
       }
 
       const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-        data: { name, role: 'storekeeper', assigned_area: assigned_area ?? null },
+        data: { name, role: 'admin' },
       })
 
       if (error) return Response.json({ error: error.message }, { status: 400 })
@@ -23,7 +23,7 @@ Deno.serve(async (request) => {
         await supabase.from('users').upsert({
           id: data.user.id,
           name,
-          role: 'storekeeper',
+          role: 'admin',
         })
       }
 

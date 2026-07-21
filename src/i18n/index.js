@@ -19,4 +19,13 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 })
 
+function syncDocumentLanguage(lng) {
+  if (typeof document === 'undefined') return
+  document.documentElement.lang = lng
+  document.documentElement.dir = lng === 'fr' ? 'ltr' : 'ltr'
+}
+
+syncDocumentLanguage(i18n.resolvedLanguage || i18n.language)
+i18n.on('languageChanged', syncDocumentLanguage)
+
 export default i18n

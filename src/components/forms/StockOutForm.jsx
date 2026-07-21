@@ -16,7 +16,6 @@ export default function StockOutForm({ onSubmitted }) {
   const { snapshot } = useInventorySnapshot()
   const materials = (snapshot?.materials ?? []).filter((material) => !material.is_archived)
   const levels = snapshot?.levels ?? []
-  const isStorekeeper = user?.role === 'storekeeper'
   const [form, setForm] = useState({
     material_id: '',
     level_id: '',
@@ -74,25 +73,20 @@ export default function StockOutForm({ onSubmitted }) {
     setError('')
     setMessage('')
 
-    if (!isStorekeeper) {
-      setError('Stock movements are recorded by storekeeper accounts only.')
-      return
-    }
-
     if (!form.material_id) {
-      setError('Create at least one material before recording stock out.')
+      setError(t('stockOut.noMaterials'))
       return
     }
     if (!form.level_id) {
-      setError('Create at least one work level before recording stock out.')
+      setError(t('stockOut.noLevels'))
       return
     }
     if (Number(form.quantity) <= 0) {
-      setError('Quantity must be greater than zero.')
+      setError(t('common.quantityError'))
       return
     }
     if (exceedsAvailable) {
-      setError(`Only ${availableQuantity} currently available for this material.`)
+      setError(t('stockOut.insufficient', { availableQuantity }))
       return
     }
 
@@ -112,11 +106,11 @@ export default function StockOutForm({ onSubmitted }) {
       if (!navigator.onLine || !isSupabaseConfigured) {
         enqueueOfflineMutation({ type: 'stock_out', payload })
         setQueuedCount(getOfflineQueue().length)
-        setMessage('Saved offline. It will sync automatically once the connection returns.')
+        setMessage(t('common.savedOffline'))
       } else {
         const { error: submitError } = await createStockOut(payload)
         if (submitError) throw submitError
-        setMessage('Stock out recorded successfully.')
+        setMessage(t('stockOut.success'))
       }
 
       setForm((current) => ({
@@ -127,7 +121,7 @@ export default function StockOutForm({ onSubmitted }) {
       }))
       onSubmitted?.()
     } catch (submitError) {
-      setError(submitError?.message || 'Unable to submit stock out.')
+      setError(submitError?.message || t('common.submitError'))
     } finally {
       setSubmitting(false)
     }
@@ -144,7 +138,7 @@ export default function StockOutForm({ onSubmitted }) {
           disabled={materials.length === 0}
         >
           {materials.length === 0 ? (
-            <option value="">No materials available</option>
+            <option value="">{t('common.noMaterials')}</option>
           ) : (
             materials.map((material) => (
               <option key={material.id} value={material.id}>
@@ -154,12 +148,12 @@ export default function StockOutForm({ onSubmitted }) {
           )}
         </select>
         {materials.length === 0 && (
-          <p className="mt-1 text-xs text-ink-400">Create at least one material first so stock can be consumed.</p>
+          <p className="mt-1 text-xs text-ink-400">{t('stockOut.createMaterialFirst')}</p>
         )}
       </div>
 
       <div>
-        <label className="field-label">Project level</label>
+        <label className="field-label">{t('stockOut.projectLevel')}</label>
         <select
           className="field-input"
           value={form.level_id}
@@ -167,7 +161,7 @@ export default function StockOutForm({ onSubmitted }) {
           disabled={levels.length === 0}
         >
           {levels.length === 0 ? (
-            <option value="">Create work levels first to enable stock out</option>
+    <option value="">{t('stockOut.noLevels')}</option>
           ) : (
             levels.map((level) => (
               <option key={level.id} value={level.id}>
@@ -177,7 +171,7 @@ export default function StockOutForm({ onSubmitted }) {
           )}
         </select>
         {levels.length === 0 && (
-          <p className="mt-1 text-xs text-ink-400">The admin or storekeeper must create work levels before recording usage.</p>
+          <p className="mt-1 text-xs text-ink-400">{t('stockOut.createLevelFirst')}</p>
         )}
       </div>
 
@@ -193,9 +187,7 @@ export default function StockOutForm({ onSubmitted }) {
             onChange={(event) => update('quantity', event.target.value)}
           />
           {selectedMaterial && exceedsAvailable && (
-            <p className="mt-1 text-xs font-medium text-status-low">
-              Only {availableQuantity} currently available.
-            </p>
+            <p className="mt-1 text-xs font-medium text-status-low">{t('stockOut.available', { availableQuantity })}</p>
           )}
         </div>
         <div>
@@ -224,7 +216,7 @@ export default function StockOutForm({ onSubmitted }) {
         <label className="field-label">{t('stockOut.location')}</label>
         <textarea
           rows={2}
-          placeholder="e.g. Level 4, apartment living room"
+          placeholder={t('stockOut.locationPlaceholder')}
           className="field-input resize-none"
           value={form.description}
           onChange={(event) => update('description', event.target.value)}
@@ -235,12 +227,6 @@ export default function StockOutForm({ onSubmitted }) {
         <label className="field-label">{t('stockOut.recordedBy')}</label>
         <input type="text" disabled className="field-input opacity-70" value={user?.name ?? ''} />
       </div>
-
-      {!isStorekeeper && (
-        <p className="rounded-xl border border-status-low/20 bg-status-low/5 px-3 py-2 text-sm text-status-low">
-          You are signed in as an admin. Switch to a storekeeper account to submit stock usage.
-        </p>
-      )}
 
       {message && (
         <p className="rounded-xl border border-status-healthy/20 bg-status-healthy/5 px-3 py-2 text-sm text-status-healthy">
@@ -254,16 +240,16 @@ export default function StockOutForm({ onSubmitted }) {
       )}
       {queuedCount > 0 && (
         <p className="text-xs text-ink-400">
-          {queuedCount} offline submission{queuedCount === 1 ? '' : 's'} pending sync.
+          {t('common.offlinePending', { count: queuedCount })}
         </p>
       )}
 
       <button
         type="submit"
-        disabled={submitting || exceedsAvailable || !form.level_id || !form.material_id || !isStorekeeper}
+        disabled={submitting || exceedsAvailable || !form.level_id || !form.material_id}
         className="btn-primary w-full"
       >
-        {submitting ? 'Saving...' : t('stockOut.submit')}
+        {submitting ? t('common.saving') : t('stockOut.submit')}
       </button>
     </form>
   )

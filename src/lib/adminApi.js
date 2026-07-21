@@ -1,15 +1,15 @@
 import { supabase } from './supabaseClient'
 import { isSupabaseConfigured } from './inventoryApi'
 
-export async function listStorekeepers() {
+export async function listAdmins() {
   if (!isSupabaseConfigured) {
     return { data: [], error: new Error('Supabase is not configured.') }
   }
 
-  return supabase.from('users').select('id, name, role, created_at').eq('role', 'storekeeper').order('name')
+  return supabase.from('users').select('id, name, role, created_at').eq('role', 'admin').order('name')
 }
 
-export async function inviteStorekeeper(payload) {
+export async function inviteAdmin(payload) {
   if (!isSupabaseConfigured) {
     return { data: null, error: new Error('Supabase is not configured.') }
   }
@@ -19,7 +19,7 @@ export async function inviteStorekeeper(payload) {
   })
 }
 
-export async function deactivateStorekeeper(userId) {
+export async function deactivateAdmin(userId) {
   if (!isSupabaseConfigured) {
     return { data: null, error: new Error('Supabase is not configured.') }
   }
@@ -28,4 +28,3 @@ export async function deactivateStorekeeper(userId) {
     body: { action: 'deactivate', user_id: userId },
   })
 }
-

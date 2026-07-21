@@ -1,11 +1,8 @@
 -- =========================================================================
--- Business rules & automation — Section 6 of the Cahier des Charges
+-- Business rules & automation
 -- Apply after schema.sql
 -- =========================================================================
 
--- -------------------------------------------------------------------------
--- Auto-assign sequential short codes (MAT-001, MAT-002, …) on insert
--- -------------------------------------------------------------------------
 create sequence if not exists materials_short_code_seq;
 
 create or replace function assign_material_short_code()
@@ -23,9 +20,6 @@ create trigger trg_assign_material_short_code
   before insert on materials
   for each row execute function assign_material_short_code();
 
--- -------------------------------------------------------------------------
--- On STOCK_IN insert -> increase materials.current_quantity (FR2)
--- -------------------------------------------------------------------------
 create or replace function increment_material_quantity()
 returns trigger as $$
 begin
@@ -42,11 +36,6 @@ create trigger trg_stock_in_increment
   after insert on stock_in
   for each row execute function increment_material_quantity();
 
--- -------------------------------------------------------------------------
--- On STOCK_OUT insert -> decrease materials.current_quantity (FR2)
--- Guards against negative stock at the database level (defense in depth —
--- the UI also warns before submit, see StockOutForm.jsx).
--- -------------------------------------------------------------------------
 create or replace function decrement_material_quantity()
 returns trigger as $$
 declare
@@ -71,11 +60,6 @@ create trigger trg_stock_out_decrement
   after insert on stock_out
   for each row execute function decrement_material_quantity();
 
--- -------------------------------------------------------------------------
--- Low-stock check -> in-app notification (FR6)
--- Email delivery (Supabase Edge Function + provider e.g. Resend/SendGrid)
--- is a follow-up task — see README "What's left to build".
--- -------------------------------------------------------------------------
 create or replace function check_low_stock(p_material_id uuid)
 returns void
 language plpgsql
@@ -98,8 +82,6 @@ begin
       where material_id = m.id
         and is_read = false
     );
-    -- Forward the notification to the `send-low-stock-email` Edge Function
-    -- (or a queue worker) to deliver email via your provider of choice.
   end if;
 end;
 $$;
@@ -117,10 +99,6 @@ create trigger trg_material_low_stock_check
   after insert or update of current_quantity, minimum_threshold on materials
   for each row execute function check_material_low_stock_after_change();
 
--- -------------------------------------------------------------------------
--- Immutability: block UPDATE/DELETE on stock_in / stock_out (FR5)
--- Corrections must be new compensating entries, never edits.
--- -------------------------------------------------------------------------
 create or replace function block_ledger_mutation()
 returns trigger as $$
 begin
@@ -138,19 +116,10 @@ create trigger trg_block_stock_out_mutation
   before update or delete on stock_out
   for each row execute function block_ledger_mutation();
 
--- -------------------------------------------------------------------------
--- ISA constraint: every user is exactly one of admin / storekeeper (T, X)
--- Enforced here at insert time on `users`; pair with application logic
--- that creates the matching admins/storekeepers row in the same request.
--- -------------------------------------------------------------------------
 create or replace function enforce_user_subtype()
 returns trigger as $$
 begin
-  if new.role = 'admin' then
-    insert into admins (id) values (new.id) on conflict (id) do nothing;
-  elsif new.role = 'storekeeper' then
-    insert into storekeepers (id) values (new.id) on conflict (id) do nothing;
-  end if;
+  insert into admins (id) values (new.id) on conflict (id) do nothing;
   return new;
 end;
 $$ language plpgsql;
@@ -160,11 +129,6 @@ create trigger trg_enforce_user_subtype
   after insert on users
   for each row execute function enforce_user_subtype();
 
--- -------------------------------------------------------------------------
--- Auto-create app profiles when Supabase Auth creates a user
--- This lets client-side `supabase.auth.signUp()` work without an edge
--- function for the basic signup flow.
--- -------------------------------------------------------------------------
 create or replace function handle_new_auth_user()
 returns trigger
 language plpgsql
@@ -176,7 +140,7 @@ begin
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'name', split_part(coalesce(new.email, ''), '@', 1)),
-    'storekeeper'
+    'admin'
   )
   on conflict (id) do update
     set name = excluded.name,

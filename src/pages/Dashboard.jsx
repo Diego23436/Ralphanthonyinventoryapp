@@ -11,7 +11,6 @@ import {
   Layers3,
 } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import { useAuth } from '../contexts/AuthContext'
 import useInventorySnapshot from '../hooks/useInventorySnapshot'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -23,7 +22,6 @@ import StockOutModal from '../components/forms/StockOutModal'
 
 export default function Dashboard() {
   const { t } = useTranslation()
-  const { isAdmin } = useAuth()
   const { snapshot, loading, error, refresh } = useInventorySnapshot()
   const [stockInOpen, setStockInOpen] = useState(false)
   const [stockOutOpen, setStockOutOpen] = useState(false)
@@ -141,25 +139,21 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-3xl border border-white/50 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-ink-700 dark:bg-ink-900/60">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">Operations overview</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">{t('dashboard.overview')}</p>
           <h1 className="mt-2 text-2xl font-bold md:text-3xl">{t('dashboard.title')}</h1>
           <p className="mt-2 max-w-2xl text-sm text-ink-500 dark:text-ink-300">
-            Live inventory, low-stock signals, and recent activity update across connected devices in real time.
+            {t('dashboard.subtitle')}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {isAdmin && (
-            <>
-              <button onClick={exportPdf} className="btn-secondary !px-3 !py-2 text-xs">
-                <Download size={14} /> PDF
-              </button>
-              <button onClick={exportExcel} className="btn-secondary !px-3 !py-2 text-xs">
-                <FileSpreadsheet size={14} /> Excel
-              </button>
-            </>
-          )}
+          <button onClick={exportPdf} className="btn-secondary !px-3 !py-2 text-xs">
+            <Download size={14} /> {t('common.pdf')}
+          </button>
+          <button onClick={exportExcel} className="btn-secondary !px-3 !py-2 text-xs">
+            <FileSpreadsheet size={14} /> {t('common.excel')}
+          </button>
           <button onClick={refresh} className="btn-secondary">
-            <RefreshCw size={16} /> Refresh
+            <RefreshCw size={16} /> {t('common.refresh')}
           </button>
         </div>
       </div>
@@ -169,31 +163,31 @@ export default function Dashboard() {
           <form onSubmit={handleMaterialSetup} className="card space-y-4 p-5">
             <div className="flex items-center gap-2">
               <Layers3 size={18} className="text-clay-500" />
-              <h2 className="text-sm font-semibold text-ink-500">Initialize materials</h2>
+              <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeMaterials')}</h2>
             </div>
             <div>
-              <label className="field-label">Material name</label>
+              <label className="field-label">{t('materials.name')}</label>
               <input
                 name="name"
                 required
                 className="field-input"
                 value={materialDraft.name}
                 onChange={(event) => setMaterialDraft((current) => ({ ...current, name: event.target.value }))}
-                placeholder="e.g. Cement 50kg"
+                placeholder={t('dashboard.materialNamePlaceholder')}
               />
             </div>
             <div>
-              <label className="field-label">Description</label>
+              <label className="field-label">{t('materials.description')}</label>
               <input
                 name="description"
                 className="field-input"
                 value={materialDraft.description}
                 onChange={(event) => setMaterialDraft((current) => ({ ...current, description: event.target.value }))}
-                placeholder="Optional notes"
+                placeholder={t('dashboard.optionalNotes')}
               />
             </div>
             <div>
-              <label className="field-label">Minimum threshold</label>
+              <label className="field-label">{t('materials.threshold')}</label>
               <input
                 name="minimum_threshold"
                 type="number"
@@ -207,39 +201,39 @@ export default function Dashboard() {
               />
             </div>
             <button type="submit" disabled={savingMaterial} className="btn-primary w-full">
-              {savingMaterial ? 'Saving...' : 'Create material'}
+              {savingMaterial ? t('common.saving') : t('dashboard.createMaterial')}
             </button>
           </form>
 
           <form onSubmit={handleLevelSetup} className="card space-y-4 p-5">
             <div className="flex items-center gap-2">
               <Layers3 size={18} className="text-clay-500" />
-              <h2 className="text-sm font-semibold text-ink-500">Initialize work levels</h2>
+              <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeLevels')}</h2>
             </div>
             <div>
-              <label className="field-label">Level name</label>
+              <label className="field-label">{t('dashboard.levelName')}</label>
               <input
                 name="name"
                 required
                 className="field-input"
                 value={levelDraft.name}
                 onChange={(event) => setLevelDraft((current) => ({ ...current, name: event.target.value }))}
-                placeholder="e.g. Level 1 - Slab"
+                placeholder={t('dashboard.levelNamePlaceholder')}
               />
             </div>
             <div>
-              <label className="field-label">Description</label>
+              <label className="field-label">{t('materials.description')}</label>
               <input
                 name="description"
                 className="field-input"
                 value={levelDraft.description}
                 onChange={(event) => setLevelDraft((current) => ({ ...current, description: event.target.value }))}
-                placeholder="Optional zone or work package"
+                placeholder={t('dashboard.optionalZone')}
               />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="field-label">Start date</label>
+                <label className="field-label">{t('dashboard.startDate')}</label>
                 <input
                   name="start_date"
                   type="date"
@@ -250,7 +244,7 @@ export default function Dashboard() {
                 />
               </div>
               <div>
-                <label className="field-label">Finish date</label>
+                <label className="field-label">{t('dashboard.finishDate')}</label>
                 <input
                   name="estimated_finish_date"
                   type="date"
@@ -263,7 +257,7 @@ export default function Dashboard() {
               </div>
             </div>
             <button type="submit" disabled={savingLevel} className="btn-primary w-full">
-              {savingLevel ? 'Saving...' : 'Create work level'}
+              {savingLevel ? t('common.saving') : t('dashboard.createLevel')}
             </button>
           </form>
         </div>
@@ -312,7 +306,7 @@ export default function Dashboard() {
 
       {loading && (
         <div className="rounded-2xl border border-ink-100 bg-white/80 p-5 text-sm text-ink-500 shadow-sm dark:border-ink-700 dark:bg-ink-900/60">
-          Loading live inventory snapshot...
+          {t('dashboard.loading')}
         </div>
       )}
       {error && (
@@ -326,10 +320,10 @@ export default function Dashboard() {
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
               <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.usageChart')}</h2>
-              <p className="text-xs text-ink-400">Seven-day stock-out volume</p>
+              <p className="text-xs text-ink-400">{t('dashboard.usageSubtitle')}</p>
             </div>
             <span className="rounded-full bg-clay-50 px-3 py-1 text-xs font-semibold text-clay-700 dark:bg-ink-700 dark:text-clay-200">
-              {watchCount} watching
+              {t('dashboard.watching', { count: watchCount })}
             </span>
           </div>
           <ResponsiveContainer width="100%" height={260}>
@@ -350,7 +344,7 @@ export default function Dashboard() {
           <h2 className="mb-4 text-sm font-semibold text-ink-500">{t('dashboard.recentActivity')}</h2>
           {recentActivity.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-ink-200 p-6 text-sm text-ink-400 dark:border-ink-700">
-              Activity will appear here once stock moves are recorded.
+              {t('dashboard.noActivity')}
             </div>
           ) : (
             <ul className="space-y-3">
@@ -363,7 +357,7 @@ export default function Dashboard() {
                   />
                   <div>
                     <p className="text-sm font-medium">
-                      {activity.type === 'stock_in' ? 'Stock In' : 'Stock Out'} - {activity.material} ({activity.quantity})
+                      {activity.type === 'stock_in' ? t('nav.stockIn') : t('nav.stockOut')} - {activity.material} ({activity.quantity})
                     </p>
                     <p className="text-xs text-ink-400">{activity.when}</p>
                   </div>
@@ -374,35 +368,34 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {isAdmin && (
-        <div className="card space-y-3 p-5">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-sm font-semibold text-ink-500">Admin exports</h2>
-              <p className="text-xs text-ink-400">Export the full transaction ledger directly from the dashboard.</p>
-            </div>
-            <span className="rounded-full bg-clay-50 px-3 py-1 text-xs font-semibold text-clay-700 dark:bg-ink-700 dark:text-clay-200">
-              {transactions.length} transactions
-            </span>
+      <div className="card space-y-3 p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.exports')}</h2>
+            <p className="text-xs text-ink-400">{t('dashboard.exportsSubtitle')}</p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button onClick={exportPdf} className="btn-secondary !px-3 !py-2 text-xs">
-              <Download size={14} /> PDF
-            </button>
-            <button onClick={exportExcel} className="btn-secondary !px-3 !py-2 text-xs">
-              <FileSpreadsheet size={14} /> Excel
-            </button>
-          </div>
+          <span className="rounded-full bg-clay-50 px-3 py-1 text-xs font-semibold text-clay-700 dark:bg-ink-700 dark:text-clay-200">
+            {t('dashboard.transactions', { count: transactions.length })}
+          </span>
         </div>
-      )}
+        <div className="flex flex-wrap gap-2">
+          <button onClick={exportPdf} className="btn-secondary !px-3 !py-2 text-xs">
+            <Download size={14} /> {t('common.pdf')}
+          </button>
+          <button onClick={exportExcel} className="btn-secondary !px-3 !py-2 text-xs">
+            <FileSpreadsheet size={14} /> {t('common.excel')}
+          </button>
+        </div>
+      </div>
 
-      {isAdmin && belowThreshold > 0 && (
+      {belowThreshold > 0 && (
         <div className="card flex flex-col gap-3 border-status-low/30 bg-status-low/5 p-4 sm:flex-row sm:items-center">
           <AlertTriangle className="text-status-low" size={20} />
           <p className="text-sm">
-            <strong>{belowThreshold} material(s)</strong> are at or below their configured threshold.{' '}
+            <strong>{t('dashboard.belowThresholdCount', { count: belowThreshold })}</strong>{' '}
+            {t('dashboard.belowThresholdText')}{' '}
             <a href="/materials" className="font-semibold text-status-low underline underline-offset-2">
-              Review now
+              {t('dashboard.reviewNow')}
             </a>
           </p>
         </div>

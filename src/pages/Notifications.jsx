@@ -17,19 +17,19 @@ export default function Notifications() {
   return (
     <div className="space-y-6">
       <div className="rounded-3xl border border-white/50 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-ink-700 dark:bg-ink-900/60">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">Signals</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay-500">{t('notifications.signals')}</p>
         <h1 className="mt-2 text-2xl font-bold">{t('notifications.title')}</h1>
         <p className="mt-2 max-w-2xl text-sm text-ink-500 dark:text-ink-300">
-          Threshold alerts are reflected here immediately when realtime updates arrive from Supabase.
+          {t('notifications.subtitle')}
         </p>
       </div>
 
       {loading ? (
         <div className="rounded-2xl border border-ink-100 bg-white/80 p-5 text-sm text-ink-500 shadow-sm dark:border-ink-700 dark:bg-ink-900/60">
-          Loading alerts...
+          {t('notifications.loading')}
         </div>
       ) : notifications.length === 0 ? (
-        <div className="card p-8 text-center text-sm text-ink-400">All materials are currently healthy.</div>
+        <div className="card p-8 text-center text-sm text-ink-400">{t('notifications.empty')}</div>
       ) : (
         <ul className="space-y-3">
           {notifications.map((notification) => (
@@ -50,7 +50,7 @@ export default function Notifications() {
                   onClick={() => handleMarkRead(notification.id)}
                   className="btn-secondary !px-3 !py-2 text-xs"
                 >
-                  <CheckCircle2 size={14} /> Mark read
+                  <CheckCircle2 size={14} /> {t('notifications.markRead')}
                 </button>
               )}
             </li>

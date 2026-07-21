@@ -10,7 +10,6 @@ export default function StockInForm({ onSubmitted }) {
   const { user } = useAuth()
   const { snapshot } = useInventorySnapshot()
   const materials = (snapshot?.materials ?? []).filter((material) => !material.is_archived)
-  const isStorekeeper = user?.role === 'storekeeper'
   const [form, setForm] = useState({
     material_id: '',
     quantity: '',
@@ -53,18 +52,13 @@ export default function StockInForm({ onSubmitted }) {
     setError('')
     setMessage('')
 
-    if (!isStorekeeper) {
-      setError('Stock entries are recorded by storekeeper accounts only.')
-      return
-    }
-
     if (!form.material_id) {
-      setError('Create at least one material before recording stock in.')
+      setError(t('stockIn.noMaterials'))
       return
     }
 
     if (Number(form.quantity) <= 0) {
-      setError('Quantity must be greater than zero.')
+      setError(t('common.quantityError'))
       return
     }
 
@@ -82,11 +76,11 @@ export default function StockInForm({ onSubmitted }) {
       if (!navigator.onLine || !isSupabaseConfigured) {
         enqueueOfflineMutation({ type: 'stock_in', payload })
         setQueuedCount(getOfflineQueue().length)
-        setMessage('Saved offline. It will sync automatically once the connection returns.')
+        setMessage(t('common.savedOffline'))
       } else {
         const { error: submitError } = await createStockIn(payload)
         if (submitError) throw submitError
-        setMessage('Stock in recorded successfully.')
+        setMessage(t('stockIn.success'))
       }
 
       setForm((current) => ({
@@ -96,7 +90,7 @@ export default function StockInForm({ onSubmitted }) {
       }))
       onSubmitted?.()
     } catch (submitError) {
-      setError(submitError?.message || 'Unable to submit stock in.')
+      setError(submitError?.message || t('common.submitError'))
     } finally {
       setSubmitting(false)
     }
@@ -113,7 +107,7 @@ export default function StockInForm({ onSubmitted }) {
           disabled={materials.length === 0}
         >
           {materials.length === 0 ? (
-            <option value="">No materials available</option>
+            <option value="">{t('common.noMaterials')}</option>
           ) : (
             materials.map((material) => (
               <option key={material.id} value={material.id}>
@@ -123,7 +117,7 @@ export default function StockInForm({ onSubmitted }) {
           )}
         </select>
         {materials.length === 0 && (
-          <p className="mt-1 text-xs text-ink-400">Create at least one material first so stock can be recorded.</p>
+          <p className="mt-1 text-xs text-ink-400">{t('stockIn.createMaterialFirst')}</p>
         )}
       </div>
 
@@ -155,7 +149,7 @@ export default function StockInForm({ onSubmitted }) {
         <label className="field-label">{t('stockIn.deliveredBy')}</label>
         <input
           type="text"
-          placeholder="Supplier or courier name"
+          placeholder={t('stockIn.deliveredByPlaceholder')}
           className="field-input"
           value={form.delivered_by}
           onChange={(event) => update('delivered_by', event.target.value)}
@@ -166,12 +160,6 @@ export default function StockInForm({ onSubmitted }) {
         <label className="field-label">{t('stockIn.receivedBy')}</label>
         <input type="text" disabled className="field-input opacity-70" value={user?.name ?? ''} />
       </div>
-
-      {!isStorekeeper && (
-        <p className="rounded-xl border border-status-low/20 bg-status-low/5 px-3 py-2 text-sm text-status-low">
-          You are signed in as an admin. Switch to a storekeeper account to submit stock entries.
-        </p>
-      )}
 
       {message && (
         <p className="rounded-xl border border-status-healthy/20 bg-status-healthy/5 px-3 py-2 text-sm text-status-healthy">
@@ -185,12 +173,12 @@ export default function StockInForm({ onSubmitted }) {
       )}
       {queuedCount > 0 && (
         <p className="text-xs text-ink-400">
-          {queuedCount} offline submission{queuedCount === 1 ? '' : 's'} pending sync.
+          {t('common.offlinePending', { count: queuedCount })}
         </p>
       )}
 
-      <button type="submit" disabled={submitting || !form.material_id || !isStorekeeper} className="btn-primary w-full">
-        {submitting ? 'Saving...' : t('stockIn.submit')}
+      <button type="submit" disabled={submitting || !form.material_id} className="btn-primary w-full">
+        {submitting ? t('common.saving') : t('stockIn.submit')}
       </button>
     </form>
   )

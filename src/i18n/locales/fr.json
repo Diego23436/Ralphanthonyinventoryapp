@@ -4,7 +4,12 @@
     "tagline": "Un système en temps réel pour suivre chaque matériau entrant et sortant du chantier — précis, sécurisé et toujours à jour."
   },
   "welcome": {
-    "cta": "Commencer"
+    "cta": "Commencer",
+    "realtime": "Inventaire en temps réel",
+    "history": "Historique des mouvements de stock",
+    "alerts": "Alertes de seuil",
+    "goToLogin": "Aller à la connexion",
+    "createAccount": "Créer un compte"
   },
   "auth": {
     "login": "Connexion",
@@ -14,6 +19,20 @@
     "loginButton": "Se connecter",
     "loggingIn": "Connexion en cours…",
     "error": "E-mail ou mot de passe incorrect."
+  },
+  "common": {
+    "refresh": "Actualiser",
+    "pdf": "PDF",
+    "excel": "Excel",
+    "all": "Tous",
+    "actions": "Actions",
+    "saving": "Enregistrement...",
+    "loading": "Chargement...",
+    "submitError": "Impossible de terminer cette action.",
+    "quantityError": "La quantité doit être supérieure à zéro.",
+    "savedOffline": "Enregistré hors ligne. La synchronisation se fera automatiquement lorsque la connexion reviendra.",
+    "noMaterials": "Aucun matériau disponible",
+    "offlinePending": "{{count}} soumission(s) hors ligne en attente de synchronisation."
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -28,6 +47,8 @@
   },
   "dashboard": {
     "title": "Tableau de bord",
+    "overview": "Vue des opérations",
+    "subtitle": "L’inventaire en direct, les alertes de stock faible et l’activité récente se mettent à jour en temps réel sur tous les appareils connectés.",
     "materialsTracked": "Matériaux suivis",
     "belowThreshold": "Sous le seuil",
     "stockInToday": "Entrées aujourd'hui",
@@ -35,17 +56,44 @@
     "newDelivery": "+ Nouvelle livraison",
     "recordUsage": "+ Enregistrer une sortie",
     "usageChart": "Utilisation des matériaux — 7 derniers jours",
-    "recentActivity": "Activité récente"
+    "usageSubtitle": "Volume des sorties sur sept jours",
+    "watching": "{{count}} en surveillance",
+    "recentActivity": "Activité récente",
+    "noActivity": "L’activité apparaîtra ici dès qu’un mouvement de stock sera enregistré.",
+    "initializeMaterials": "Initialiser les matériaux",
+    "materialNamePlaceholder": "ex. Ciment 50kg",
+    "optionalNotes": "Notes optionnelles",
+    "createMaterial": "Créer le matériau",
+    "initializeLevels": "Initialiser les niveaux de travail",
+    "levelName": "Nom du niveau",
+    "levelNamePlaceholder": "ex. Niveau 1 - Dalle",
+    "optionalZone": "Zone ou lot de travail optionnel",
+    "startDate": "Date de début",
+    "finishDate": "Date de fin",
+    "createLevel": "Créer le niveau de travail",
+    "loading": "Chargement de l’aperçu de l’inventaire en direct...",
+    "exports": "Exports du registre",
+    "exportsSubtitle": "Exportez le registre complet directement depuis le tableau de bord.",
+    "transactions": "{{count}} transaction(s)",
+    "belowThresholdCount": "{{count}} matériau(x)",
+    "belowThresholdText": "sont au niveau du seuil ou en dessous.",
+    "reviewNow": "Voir maintenant"
   },
   "materials": {
     "title": "Gestion des matériaux",
+    "catalog": "Catalogue d’inventaire",
+    "subtitle": "Des fiches de stock propres et consultables avec seuils, quantité actuelle et couleurs d’état synchronisées.",
     "registerNew": "+ Enregistrer un matériau",
     "name": "Nom",
     "description": "Description",
     "quantity": "Quantité actuelle",
     "threshold": "Seuil",
     "status": "Statut",
-    "search": "Rechercher des matériaux…"
+    "search": "Rechercher des matériaux…",
+    "loading": "Chargement des matériaux...",
+    "archive": "Archiver",
+    "noMatch": "Aucun matériau ne correspond à « {{query}} ».",
+    "submitError": "Impossible d’enregistrer le matériau."
   },
   "stockIn": {
     "title": "Entrée de stock — Nouvelle livraison",
@@ -53,29 +101,94 @@
     "quantity": "Quantité reçue",
     "date": "Date de livraison",
     "deliveredBy": "Livré par",
+    "deliveredByPlaceholder": "Nom du fournisseur ou du transporteur",
     "receivedBy": "Reçu par",
-    "submit": "Enregistrer la livraison"
+    "submit": "Enregistrer la livraison",
+    "noMaterials": "Créez au moins un matériau avant d’enregistrer une entrée de stock.",
+    "createMaterialFirst": "Créez d’abord au moins un matériau pour pouvoir enregistrer le stock.",
+    "success": "Entrée de stock enregistrée avec succès."
   },
   "stockOut": {
     "title": "Sortie de stock — Enregistrer l'utilisation",
     "material": "Matériau",
     "quantity": "Quantité utilisée",
     "damaged": "Endommagé ?",
+    "projectLevel": "Niveau du projet",
     "location": "Niveau / Emplacement",
+    "locationPlaceholder": "ex. Niveau 4, salon de l’appartement",
     "date": "Date",
     "recordedBy": "Enregistré par",
-    "submit": "Enregistrer la sortie"
+    "submit": "Enregistrer la sortie",
+    "noMaterials": "Créez au moins un matériau avant d’enregistrer une sortie de stock.",
+    "noLevels": "Créez d’abord des niveaux de travail pour activer la sortie de stock.",
+    "createMaterialFirst": "Créez d’abord au moins un matériau pour pouvoir consommer du stock.",
+    "createLevelFirst": "Créez au moins un niveau de travail avant d’enregistrer l’utilisation.",
+    "available": "Seulement {{availableQuantity}} actuellement disponibles.",
+    "insufficient": "Seulement {{availableQuantity}} actuellement disponibles pour ce matériau.",
+    "success": "Sortie de stock enregistrée avec succès."
   },
   "history": {
-    "title": "Historique des transactions"
+    "title": "Historique des transactions",
+    "auditTrail": "Piste d’audit",
+    "subtitle": "Chaque mouvement de stock est ajouté, jamais modifié. Exportez la vue filtrée pour les rapports ou l’archivage.",
+    "loading": "Chargement de l’historique des transactions...",
+    "date": "Date",
+    "operation": "Opération",
+    "material": "Matériau",
+    "quantity": "Quantité",
+    "performedBy": "Réalisé par",
+    "location": "Emplacement",
+    "by": "Par",
+    "noMatch": "Aucune transaction ne correspond au filtre actuel.",
+    "appendOnly": "Ce registre est en ajout uniquement. Les corrections passent par de nouvelles écritures compensatoires, jamais par des modifications ou suppressions."
   },
   "analytics": {
-    "title": "Analytique"
+    "title": "Analytique",
+    "subtitle": "Une vue plus précise de la demande, du niveau de stock actuel et de l’évolution de l’inventaire dans le temps.",
+    "usageOverTime": "Utilisation dans le temps",
+    "topMaterials": "Top 5 des matériaux par stock actuel"
   },
   "notifications": {
-    "title": "Notifications"
+    "title": "Notifications",
+    "signals": "Signaux",
+    "subtitle": "Les alertes de seuil apparaissent ici immédiatement lorsque les mises à jour temps réel arrivent depuis Supabase.",
+    "loading": "Chargement des alertes...",
+    "empty": "Tous les matériaux sont actuellement sains.",
+    "markRead": "Marquer comme lu"
   },
   "settings": {
-    "title": "Paramètres"
+    "title": "Paramètres",
+    "profileAccess": "Profil et accès",
+    "subtitle": "Les préférences restent simples et toute l’application suit le même flux admin.",
+    "profile": "Profil",
+    "phone": "Téléphone",
+    "phonePlaceholder": "+237 6XX XXX XXX",
+    "changePassword": "Changer le mot de passe",
+    "preferences": "Préférences",
+    "language": "Langue",
+    "theme": "Thème",
+    "switchToDark": "Passer en sombre",
+    "switchToLight": "Passer en clair"
+  },
+  "login": {
+    "subtitle": "Connectez-vous pour suivre les matériaux, synchroniser l’activité en temps réel et continuer même si la connexion est instable.",
+    "featureAccessTitle": "Contrôle administrateur unique",
+    "featureAccessText": "Un seul type de compte gère les matériaux, l’utilisation, l’historique et les notifications.",
+    "featureOfflineTitle": "Résistant hors ligne",
+    "featureOfflineText": "Les soumissions en attente se synchronisent automatiquement au retour du réseau.",
+    "locked": "Trop de tentatives échouées. Veuillez patienter un instant avant de réessayer.",
+    "createAccount": "Créer un nouveau compte",
+    "setupNote": "Si Supabase n’est pas encore configuré, l’application s’affichera tout de même mais la connexion renverra un message d’installation."
+  },
+  "signup": {
+    "banner": "Créer un compte",
+    "title": "Inscription",
+    "subtitle": "Créer le compte administrateur de la plateforme.",
+    "fullName": "Nom complet",
+    "creating": "Création du compte...",
+    "create": "Créer le compte",
+    "created": "Compte créé. Vous pouvez maintenant vous connecter.",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "backToLogin": "Retour à la connexion"
   }
 }

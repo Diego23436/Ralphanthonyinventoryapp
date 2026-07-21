@@ -6,7 +6,7 @@ const supabase = createClient(supabaseUrl, serviceRoleKey)
 
 Deno.serve(async (request) => {
   try {
-    const { email, password, name, role = 'storekeeper' } = await request.json()
+    const { email, password, name } = await request.json()
 
     if (!email || !password || !name) {
       return Response.json({ error: 'email, password, and name are required' }, { status: 400 })
@@ -16,7 +16,7 @@ Deno.serve(async (request) => {
       email,
       password,
       email_confirm: true,
-      user_metadata: { name, role },
+      user_metadata: { name, role: 'admin' },
     })
 
     if (error) {
@@ -27,7 +27,7 @@ Deno.serve(async (request) => {
       const { error: profileError } = await supabase.from('users').upsert({
         id: data.user.id,
         name,
-        role,
+        role: 'admin',
       })
       if (profileError) {
         return Response.json({ error: profileError.message }, { status: 400 })

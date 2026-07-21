@@ -25,6 +25,26 @@ async function loadProfile(userId) {
   return data
 }
 
+function buildProfileFromAuth(authUser) {
+  const meta = authUser?.user_metadata ?? {}
+  return {
+    id: authUser.id,
+    name: meta.name || (authUser.email ? authUser.email.split('@')[0] : 'User'),
+    role: 'admin',
+  }
+}
+
+async function resolveProfile(authUser) {
+  try {
+    const profile = await loadProfile(authUser.id)
+    if (profile) return profile
+  } catch {
+    // Fall back to Auth metadata if the profile row is not yet available.
+  }
+
+  return buildProfileFromAuth(authUser)
+}
+
 function createSetupError() {
   return new Error(
     'Supabase is not configured yet. Add your project URL and anon key to .env, then restart the dev server.'
@@ -39,14 +59,6 @@ function normalizeAuthError(error) {
     )
   }
   return error instanceof Error ? error : new Error('Authentication failed.')
-}
-
-function fallbackProfile(userId, email) {
-  return {
-    id: userId,
-    name: email ? email.split('@')[0] : 'User',
-    role: 'storekeeper',
-  }
 }
 
 export function AuthProvider({ children }) {
@@ -64,9 +76,8 @@ export function AuthProvider({ children }) {
         const { data } = await supabase.auth.getSession()
         const session = data?.session
         if (session?.user) {
-          const profile = await loadProfile(session.user.id)
           if (active) {
-            const nextProfile = profile ?? fallbackProfile(session.user.id, session.user.email)
+            const nextProfile = await resolveProfile(session.user)
             setUser(nextProfile)
             localStorage.setItem('ra_dev_user', JSON.stringify(nextProfile))
           }
@@ -86,8 +97,7 @@ export function AuthProvider({ children }) {
     const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
       try {
         if (session?.user) {
-          const profile = await loadProfile(session.user.id)
-          const nextProfile = profile ?? fallbackProfile(session.user.id, session.user.email)
+          const nextProfile = await resolveProfile(session.user)
           setUser(nextProfile)
           localStorage.setItem('ra_dev_user', JSON.stringify(nextProfile))
         } else {
@@ -121,8 +131,7 @@ export function AuthProvider({ children }) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) return { error: normalizeAuthError(error) }
 
-      const profile = await loadProfile(data.user.id)
-      const nextProfile = profile ?? fallbackProfile(data.user.id, data.user.email)
+      const nextProfile = await resolveProfile(data.user)
       setUser(nextProfile)
       localStorage.setItem('ra_dev_user', JSON.stringify(nextProfile))
       return { error: null }
@@ -136,7 +145,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function signUp({ email, password, name, role = 'storekeeper' }) {
+  async function signUp({ email, password, name }) {
     if (!isSupabaseConfigured) {
       return { error: createSetupError() }
     }
@@ -146,7 +155,7 @@ export function AuthProvider({ children }) {
         email,
         password,
         options: {
-          data: { name, role },
+          data: { name, role: 'admin' },
         },
       })
       if (error) return { error: normalizeAuthError(error) }
@@ -164,7 +173,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, isAdmin: true }}>
       {children}
     </AuthContext.Provider>
   )
