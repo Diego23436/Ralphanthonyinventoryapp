@@ -74,6 +74,7 @@
     "startDate": "Date de début",
     "finishDate": "Date de fin",
     "createLevel": "Créer le niveau de travail",
+    "setupHint": "Utilisez ces formulaires à tout moment pour ajouter de nouveaux matériaux ou niveaux.",
     "loading": "Chargement de l’aperçu de l’inventaire en direct...",
     "exports": "Exports du registre",
     "exportsSubtitle": "Exportez le registre complet directement depuis le tableau de bord.",

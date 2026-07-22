@@ -48,7 +48,6 @@ export default function Dashboard() {
   const usageByDay = snapshot?.usageByDay ?? []
   const recentActivity = snapshot?.recentActivity ?? []
   const transactions = snapshot?.transactions ?? []
-  const setupNeeded = materials.length === 0 || levels.length === 0
 
   function exportPdf() {
     const doc = new jsPDF()
@@ -158,108 +157,112 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {setupNeeded && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          <form onSubmit={handleMaterialSetup} className="card space-y-4 p-5">
-            <div className="flex items-center gap-2">
-              <Layers3 size={18} className="text-clay-500" />
-              <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeMaterials')}</h2>
-            </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <form onSubmit={handleMaterialSetup} className="card space-y-4 p-5">
+          <div className="flex items-center gap-2">
+            <Layers3 size={18} className="text-clay-500" />
+            <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeMaterials')}</h2>
+          </div>
+          <div>
+            <label className="field-label">{t('materials.name')}</label>
+            <input
+              name="name"
+              required
+              className="field-input"
+              value={materialDraft.name}
+              onChange={(event) => setMaterialDraft((current) => ({ ...current, name: event.target.value }))}
+              placeholder={t('dashboard.materialNamePlaceholder')}
+            />
+          </div>
+          <div>
+            <label className="field-label">{t('materials.description')}</label>
+            <input
+              name="description"
+              className="field-input"
+              value={materialDraft.description}
+              onChange={(event) => setMaterialDraft((current) => ({ ...current, description: event.target.value }))}
+              placeholder={t('dashboard.optionalNotes')}
+            />
+          </div>
+          <div>
+            <label className="field-label">{t('materials.threshold')}</label>
+            <input
+              name="minimum_threshold"
+              type="number"
+              min="0"
+              required
+              className="field-input"
+              value={materialDraft.minimum_threshold}
+              onChange={(event) =>
+                setMaterialDraft((current) => ({ ...current, minimum_threshold: event.target.value }))
+              }
+            />
+          </div>
+          <button type="submit" disabled={savingMaterial} className="btn-primary w-full">
+            {savingMaterial ? t('common.saving') : t('dashboard.createMaterial')}
+          </button>
+        </form>
+
+        <form onSubmit={handleLevelSetup} className="card space-y-4 p-5">
+          <div className="flex items-center gap-2">
+            <Layers3 size={18} className="text-clay-500" />
+            <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeLevels')}</h2>
+          </div>
+          <div>
+            <label className="field-label">{t('dashboard.levelName')}</label>
+            <input
+              name="name"
+              required
+              className="field-input"
+              value={levelDraft.name}
+              onChange={(event) => setLevelDraft((current) => ({ ...current, name: event.target.value }))}
+              placeholder={t('dashboard.levelNamePlaceholder')}
+            />
+          </div>
+          <div>
+            <label className="field-label">{t('materials.description')}</label>
+            <input
+              name="description"
+              className="field-input"
+              value={levelDraft.description}
+              onChange={(event) => setLevelDraft((current) => ({ ...current, description: event.target.value }))}
+              placeholder={t('dashboard.optionalZone')}
+            />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="field-label">{t('materials.name')}</label>
+              <label className="field-label">{t('dashboard.startDate')}</label>
               <input
-                name="name"
+                name="start_date"
+                type="date"
                 required
                 className="field-input"
-                value={materialDraft.name}
-                onChange={(event) => setMaterialDraft((current) => ({ ...current, name: event.target.value }))}
-                placeholder={t('dashboard.materialNamePlaceholder')}
+                value={levelDraft.start_date}
+                onChange={(event) => setLevelDraft((current) => ({ ...current, start_date: event.target.value }))}
               />
             </div>
             <div>
-              <label className="field-label">{t('materials.description')}</label>
+              <label className="field-label">{t('dashboard.finishDate')}</label>
               <input
-                name="description"
+                name="estimated_finish_date"
+                type="date"
                 className="field-input"
-                value={materialDraft.description}
-                onChange={(event) => setMaterialDraft((current) => ({ ...current, description: event.target.value }))}
-                placeholder={t('dashboard.optionalNotes')}
-              />
-            </div>
-            <div>
-              <label className="field-label">{t('materials.threshold')}</label>
-              <input
-                name="minimum_threshold"
-                type="number"
-                min="0"
-                required
-                className="field-input"
-                value={materialDraft.minimum_threshold}
+                value={levelDraft.estimated_finish_date}
                 onChange={(event) =>
-                  setMaterialDraft((current) => ({ ...current, minimum_threshold: event.target.value }))
+                  setLevelDraft((current) => ({ ...current, estimated_finish_date: event.target.value }))
                 }
               />
             </div>
-            <button type="submit" disabled={savingMaterial} className="btn-primary w-full">
-              {savingMaterial ? t('common.saving') : t('dashboard.createMaterial')}
-            </button>
-          </form>
+          </div>
+          <button type="submit" disabled={savingLevel} className="btn-primary w-full">
+            {savingLevel ? t('common.saving') : t('dashboard.createLevel')}
+          </button>
+        </form>
+      </div>
 
-          <form onSubmit={handleLevelSetup} className="card space-y-4 p-5">
-            <div className="flex items-center gap-2">
-              <Layers3 size={18} className="text-clay-500" />
-              <h2 className="text-sm font-semibold text-ink-500">{t('dashboard.initializeLevels')}</h2>
-            </div>
-            <div>
-              <label className="field-label">{t('dashboard.levelName')}</label>
-              <input
-                name="name"
-                required
-                className="field-input"
-                value={levelDraft.name}
-                onChange={(event) => setLevelDraft((current) => ({ ...current, name: event.target.value }))}
-                placeholder={t('dashboard.levelNamePlaceholder')}
-              />
-            </div>
-            <div>
-              <label className="field-label">{t('materials.description')}</label>
-              <input
-                name="description"
-                className="field-input"
-                value={levelDraft.description}
-                onChange={(event) => setLevelDraft((current) => ({ ...current, description: event.target.value }))}
-                placeholder={t('dashboard.optionalZone')}
-              />
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="field-label">{t('dashboard.startDate')}</label>
-                <input
-                  name="start_date"
-                  type="date"
-                  required
-                  className="field-input"
-                  value={levelDraft.start_date}
-                  onChange={(event) => setLevelDraft((current) => ({ ...current, start_date: event.target.value }))}
-                />
-              </div>
-              <div>
-                <label className="field-label">{t('dashboard.finishDate')}</label>
-                <input
-                  name="estimated_finish_date"
-                  type="date"
-                  className="field-input"
-                  value={levelDraft.estimated_finish_date}
-                  onChange={(event) =>
-                    setLevelDraft((current) => ({ ...current, estimated_finish_date: event.target.value }))
-                  }
-                />
-              </div>
-            </div>
-            <button type="submit" disabled={savingLevel} className="btn-primary w-full">
-              {savingLevel ? t('common.saving') : t('dashboard.createLevel')}
-            </button>
-          </form>
+      {(materials.length === 0 || levels.length === 0) && (
+        <div className="rounded-2xl border border-clay-500/20 bg-clay-500/5 px-4 py-3 text-sm text-clay-700 dark:text-clay-200">
+          {t('dashboard.setupHint')}
         </div>
       )}
 

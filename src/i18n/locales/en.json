@@ -74,6 +74,7 @@
     "startDate": "Start date",
     "finishDate": "Finish date",
     "createLevel": "Create work level",
+    "setupHint": "Use these forms anytime to add new materials or levels.",
     "loading": "Loading live inventory snapshot...",
     "exports": "Ledger exports",
     "exportsSubtitle": "Export the full transaction ledger directly from the dashboard.",
